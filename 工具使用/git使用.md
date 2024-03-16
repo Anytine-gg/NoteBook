@@ -24,7 +24,26 @@ git push -u origin main
 >
 > 当执行提交操作（git commit）时，暂存区的目录树写到版本库（对象库）中，master 分支会做相应的更新。即 master 指向的目录树就是提交时暂存区的目录树。
 >
-> 个人理解：对于新建文件git add 会被放入追踪名单中，并且加入修改名单，如果没有add，git status会显示untracked.之后，我们对这个文件进行修改，删除时，git status 会显示文件更改（modified或deleted），此时直接commit 不能上传本地库，要么先把以及修改的文件add到修改名单，要么使用commit -a提交所有更改，如果add了没有更改的文件，也不会被commit。commit 会清空暂存区，因此下次使用需要add或commit -a
+> 个人理解：对于新建文件git add 会被放入追踪名单中，并且加入修改名单，如果没有add，git status会显示untracked.之后，我们对这个文件进行修改，删除时，git status 会显示文件更改（modified或deleted），此时直接commit 不能上传本地库，要么先把修改的文件add到修改名单，要么使用commit -a提交所有更改，如果add了没有更改的文件，也不会被commit。commit 会清空暂存区，因此下次使用需要add或commit -a
 >
 > Tips: git reset .可以将add清除
 
+现在两个文件修改后，都提交到了缓存区，我们现在要取消其中一个的缓存，操作如下：
+
+```shell
+$ git status -s
+    M README
+    M hello.php
+$ git add .
+$ git status -s
+M  README
+M  hello.php
+$ git reset HEAD hello.php 
+Unstaged changes after reset:
+M    hello.php
+$ git status -s
+M  README
+    M hello.php
+```
+
+现在你执行 git commit，只会将 README 文件的改动提交，而 hello.php 是没有的。
